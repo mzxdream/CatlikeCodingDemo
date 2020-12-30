@@ -9,7 +9,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/TheBoard.sln"
+                "${workspaceFolder}/TowerDefense.sln"
             ],
             "group": {
                 "kind": "build",
