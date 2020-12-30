@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
     [SerializeField, Range(0.1f, 10f)]
     float spawnSpeed = 1f;
     float spawnProgress;
+    EnemyCollection enemies = new EnemyCollection();
     void Awake()
     {
         board.Initialize(boardSize, tileContentFactory);
@@ -54,6 +55,7 @@ public class Game : MonoBehaviour
             spawnProgress -= 1f;
             SpawnEnemy();
         }
+        enemies.GameUpdate();
     }
     void HandleAlternativeTouch()
     {
@@ -84,5 +86,6 @@ public class Game : MonoBehaviour
         GameTile spawnPoint = board.GetSpawnPoint(Random.Range(0, board.SpawnPointCount));
         Enemy enemy = enemyFactory.Get();
         enemy.SpwanOn(spawnPoint);
+        enemies.Add(enemy);
     }
 }
