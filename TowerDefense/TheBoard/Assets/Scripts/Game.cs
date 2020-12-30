@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     void Awake()
     {
         board.Initialize(boardSize, tileContentFactory);
+        board.ShowGrid = true;
     }
     void OnValidate()
     {
@@ -30,6 +31,26 @@ public class Game : MonoBehaviour
         {
             HandleTouch();
         }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            HandleAlternativeTouch();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            board.ShowPaths = !board.ShowPaths;
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            board.ShowGrid = !board.ShowGrid;
+        }
+    }
+    void HandleAlternativeTouch()
+    {
+        GameTile tile = board.GetTile(TouchRay);
+        if (tile != null)
+        {
+            board.ToggleDestination(tile);
+        }
     }
     void HandleTouch()
     {
@@ -37,7 +58,7 @@ public class Game : MonoBehaviour
         if (tile != null)
         {
             //tile.Content = tileContentFactory.Get(GameTileContentType.Destination);
-            board.ToggleDestination(tile);
+            board.ToggleWall(tile);
         }
     }
 }
