@@ -11,7 +11,7 @@ public class Game : MonoBehaviour
     Ray TouchRay => Camera.main.ScreenPointToRay(Input.mousePosition);
     void Awake()
     {
-        board.Initialize(boardSize);
+        board.Initialize(boardSize, tileContentFactory);
     }
     void OnValidate()
     {
@@ -26,7 +26,7 @@ public class Game : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             HandleTouch();
         }
@@ -36,7 +36,8 @@ public class Game : MonoBehaviour
         GameTile tile = board.GetTile(TouchRay);
         if (tile != null)
         {
-            tile.Content = tileContentFactory.Get(GameTileContentType.Destination);
+            //tile.Content = tileContentFactory.Get(GameTileContentType.Destination);
+            board.ToggleDestination(tile);
         }
     }
 }
