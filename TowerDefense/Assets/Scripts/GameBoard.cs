@@ -14,6 +14,8 @@ public class GameBoard : MonoBehaviour
     bool showGrid, showPaths;
     [SerializeField]
     Texture2D gridTexture = default;
+    List<GameTile> spawnPoints = new List<GameTile>();
+    public int SpawnPointCount => spawnPoints.Count;
     public void Initialize(Vector2Int size, GameTileContentFactory contentFactory)
     {
         this.size = size;
@@ -48,6 +50,7 @@ public class GameBoard : MonoBehaviour
         }
         //FindPaths();
         ToggleDestination(tiles[tiles.Length / 2]);
+        ToggleSpwanPoint(tiles[0]);
     }
     bool FindPaths()
     {
@@ -153,6 +156,22 @@ public class GameBoard : MonoBehaviour
             }
         }
     }
+    public void ToggleSpwanPoint(GameTile tile)
+    {
+        if (tile.Content.Type == GameTileContentType.SpawnPoint)
+        {
+            if (spawnPoints.Count > 1)
+            {
+                spawnPoints.Remove(tile);
+                tile.Content = contentFactory.Get(GameTileContentType.Empty);
+            }
+        }
+        else if (tile.Content.Type == GameTileContentType.Empty)
+        {
+            tile.Content = contentFactory.Get(GameTileContentType.SpawnPoint);
+            spawnPoints.Add(tile);
+        }
+    }
     public bool ShowPaths 
     {
         get => showPaths;
@@ -192,5 +211,9 @@ public class GameBoard : MonoBehaviour
                 m.mainTexture = null;
             }
         }
+    }
+    public GameTile GetSpawnPoint(int index)
+    {
+        return spawnPoints[index];
     }
 }
