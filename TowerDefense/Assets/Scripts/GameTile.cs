@@ -12,6 +12,7 @@ public class GameTile : MonoBehaviour
     static Quaternion southRotation = Quaternion.Euler(90f, 180f, 0f);
     static Quaternion westRotation = Quaternion.Euler(90f, 270f, 0f);
     public bool IsAlternative { get; set; }
+    public GameTile NextTileOnPath => nextOnPath;
     GameTileContent content;
     public GameTileContent Content
     {
