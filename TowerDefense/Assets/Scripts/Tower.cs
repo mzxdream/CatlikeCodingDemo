@@ -5,15 +5,41 @@ public class Tower : GameTileContent
     [SerializeField, Range(1.5f, 10.5f)]
     float targetingRange = 1.5f;
     TargetPoint target;
-    static Collider[] targetsBuffer = new Collider[1];
+    static Collider[] targetsBuffer = new Collider[100];
+    [SerializeField]
+    Transform turret = default, laserBeam = default;
+    Vector3 laserBeamScale;
+    [SerializeField, Range(1f, 100f)]
+    float damagePerSecond = 10f;
+    void Awake()
+    {
+        laserBeamScale = laserBeam.localScale;
+    }
     public override void GameUpdate()
     {
         base.GameUpdate();
         //Debug.Log("Searching for target...");
         if (TrackTarget() || AcquireTarget())
         {
-            Debug.Log("Locked on target!");
+            //Debug.Log("Locked on target!");
+            Shoot();
         }
+        else
+        {
+            laserBeam.localScale = Vector3.zero;
+        }
+    }
+    void Shoot()
+    {
+        Vector3 point = target.Position;
+        turret.LookAt(point);
+        laserBeam.localRotation = turret.localRotation;
+
+        float d = Vector3.Distance(turret.position, point);
+        laserBeamScale.z = d;
+        laserBeam.localScale = laserBeamScale;
+        laserBeam.localPosition = turret.localPosition + 0.5f * d * laserBeam.forward;
+        target.Enemy.ApplyDamage(damagePerSecond * Time.deltaTime);
     }
     void OnDrawGizmosSelected()
     {
@@ -35,8 +61,8 @@ public class Tower : GameTileContent
         int hits = Physics.OverlapCapsuleNonAlloc(a, b, targetingRange, targetsBuffer, enemyLayerMask);
         if (hits > 0)
         {
-            target = targetsBuffer[0].GetComponent<TargetPoint>();
-            Debug.Assert(target != null, "Targeted non-enemy!", targetsBuffer[0]);
+            target = targetsBuffer[Random.Range(0, hits)].GetComponent<TargetPoint>();
+            Debug.Assert(target != null, "Targeted non-enemy!", target);
             return true;
         }
         target = null;

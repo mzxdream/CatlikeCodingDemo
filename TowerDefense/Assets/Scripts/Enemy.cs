@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     float speed;
     float pathOffset;
     public float Scale { get; private set; }
+    float Health { get; set; }
 
     EnemyFactory originFactory;
     public EnemyFactory OriginFactory
@@ -30,6 +31,12 @@ public class Enemy : MonoBehaviour
         model.localScale = new Vector3(scale, scale, scale);
         this.speed = speed;
         this.pathOffset = pathOffset;
+        Health = 100f * scale;
+    }
+    public void ApplyDamage(float damage)
+    {
+        Debug.Assert(damage >= 0f, "Negative damge applied.");
+        Health -= damage;
     }
     public void SpwanOn(GameTile tile)
     {
@@ -46,6 +53,11 @@ public class Enemy : MonoBehaviour
     }
     public bool GameUpdate()
     {
+        if (Health <= 0f)
+        {
+            originFactory.Reclaim(this);
+            return false;
+        }
         //transform.localPosition += Vector3.forward * Time.deltaTime;
         progress += Time.deltaTime * progressFactor;
         while (progress >= 1f)
