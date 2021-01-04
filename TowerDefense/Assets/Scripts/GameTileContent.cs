@@ -2,7 +2,7 @@
 
 public enum GameTileContentType
 {
-    Empty, Destination, Wall, SpawnPoint
+    Empty, Destination, Wall, SpawnPoint, Tower
 }
 
 public class GameTileContent : MonoBehaviour
@@ -23,4 +23,5 @@ public class GameTileContent : MonoBehaviour
     {
         originFactory.Reclaim(this);
     }
+    public bool BlocksPath => Type == GameTileContentType.Wall || Type == GameTileContentType.Tower;
 }
