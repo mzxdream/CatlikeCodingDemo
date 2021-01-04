@@ -1,58 +1,24 @@
 ﻿using UnityEngine;
 
-public class Tower : GameTileContent
+public enum TowerType { Laser, Mortar }
+public abstract class Tower : GameTileContent
 {
     [SerializeField, Range(1.5f, 10.5f)]
-    float targetingRange = 1.5f;
-    TargetPoint target;
+    protected float targetingRange = 1.5f;
     static Collider[] targetsBuffer = new Collider[100];
-    [SerializeField]
-    Transform turret = default, laserBeam = default;
-    Vector3 laserBeamScale;
-    [SerializeField, Range(1f, 100f)]
-    float damagePerSecond = 10f;
-    void Awake()
-    {
-        laserBeamScale = laserBeam.localScale;
-    }
-    public override void GameUpdate()
-    {
-        base.GameUpdate();
-        //Debug.Log("Searching for target...");
-        if (TrackTarget() || AcquireTarget())
-        {
-            //Debug.Log("Locked on target!");
-            Shoot();
-        }
-        else
-        {
-            laserBeam.localScale = Vector3.zero;
-        }
-    }
-    void Shoot()
-    {
-        Vector3 point = target.Position;
-        turret.LookAt(point);
-        laserBeam.localRotation = turret.localRotation;
-
-        float d = Vector3.Distance(turret.position, point);
-        laserBeamScale.z = d;
-        laserBeam.localScale = laserBeamScale;
-        laserBeam.localPosition = turret.localPosition + 0.5f * d * laserBeam.forward;
-        target.Enemy.ApplyDamage(damagePerSecond * Time.deltaTime);
-    }
+    public abstract TowerType TowerType { get; }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Vector3 position = transform.localPosition;
         position.y += 0.01f;
         Gizmos.DrawWireSphere(position, targetingRange);
-        if (target != null)
-        {
-            Gizmos.DrawLine(position, target.Position);
-        }
+        //if (target != null)
+        //{
+        //    Gizmos.DrawLine(position, target.Position);
+        //}
     }
-    bool AcquireTarget()
+    protected bool AcquireTarget(out TargetPoint target)
     {
         Vector3 a = transform.localPosition;
         Vector3 b = a;
@@ -68,7 +34,7 @@ public class Tower : GameTileContent
         target = null;
         return false;
     }
-    bool TrackTarget()
+    protected bool TrackTarget(ref TargetPoint target)
     {
         if (target == null)
         {

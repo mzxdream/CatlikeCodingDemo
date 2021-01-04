@@ -485,4 +485,4 @@ MonoBehaviour:
   board: {fileID: 1675455174}
   tileContentFactory: {fileID: 11400000, guid: ee9733b9df2984445a3ea67468ecfa51, type: 2}
   enemyFactory: {fileID: 11400000, guid: 9b86f7a0bee52d74ab91f2df177e50e3, type: 2}
-  spawnSpeed: 4
+  spawnSpeed: 0.92
