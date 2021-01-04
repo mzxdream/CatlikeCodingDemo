@@ -15,7 +15,10 @@ MonoBehaviour:
   prefab: {fileID: 690964821475095633, guid: bb643020c7b47854c88deb76be48975f, type: 3}
   scale:
     min: 0.5
-    max: 2
+    max: 1
+  speed:
+    min: 0.75
+    max: 1.25
   pathOffset:
     min: -0.25
     max: 0.25
