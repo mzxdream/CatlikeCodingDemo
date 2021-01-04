@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
+  targetingRange: 2.5
 --- !u!1 &62012258516932666
 GameObject:
   m_ObjectHideFlags: 0
