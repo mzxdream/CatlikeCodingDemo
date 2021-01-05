@@ -57,7 +57,8 @@ public class Enemy : GameBehavior
     {
         if (Health <= 0f)
         {
-            originFactory.Reclaim(this);
+            //originFactory.Reclaim(this);
+            Recycle();
             return false;
         }
         //transform.localPosition += Vector3.forward * Time.deltaTime;
@@ -68,7 +69,8 @@ public class Enemy : GameBehavior
             //tileTo = tileFrom.NextTileOnPath;
             if (tileTo == null)
             {
-                OriginFactory.Reclaim(this);
+                //OriginFactory.Reclaim(this);
+                Recycle();
                 return false;
             }
             //positionFrom = positionTo;
@@ -161,5 +163,9 @@ public class Enemy : GameBehavior
         model.localPosition = new Vector3(pathOffset, 0f);
         transform.localPosition = positionFrom;
         progressFactor = speed / (Mathf.PI * Mathf.Max(Mathf.Abs(pathOffset), 0.2f));
+    }
+    public override void Recycle()
+    {
+        originFactory.Reclaim(this);
     }
 }
