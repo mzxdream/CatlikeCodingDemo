@@ -46,10 +46,22 @@ public class GameBoard : MonoBehaviour
                 {
                     tile.IsAlternative = !tile.IsAlternative;
                 }
-                tile.Content = contentFactory.Get(GameTileContentType.Empty);
+                //tile.Content = contentFactory.Get(GameTileContentType.Empty);
             }
         }
         //FindPaths();
+        //ToggleDestination(tiles[tiles.Length / 2]);
+        //ToggleSpwanPoint(tiles[0]);
+        Clear();
+    }
+    public void Clear()
+    {
+        foreach (var tile in tiles)
+        {
+            tile.Content = contentFactory.Get(GameTileContentType.Empty);
+        }
+        spawnPoints.Clear();
+        updatingContent.Clear();
         ToggleDestination(tiles[tiles.Length / 2]);
         ToggleSpwanPoint(tiles[0]);
     }
