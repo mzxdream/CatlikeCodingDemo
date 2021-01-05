@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+public enum EnemyType { Small, Medium, Large }
 public class Enemy : GameBehavior
 {
     GameTile tileFrom, tileTo;
@@ -25,13 +26,14 @@ public class Enemy : GameBehavior
             originFactory = value;
         }
     }
-    public void Initialize(float scale, float speed, float pathOffset)
+    public void Initialize(float scale, float speed, float pathOffset, float health)
     {
         Scale = scale;
         model.localScale = new Vector3(scale, scale, scale);
         this.speed = speed;
         this.pathOffset = pathOffset;
-        Health = 100f * scale;
+        //Health = 100f * scale;
+        Health = health;
     }
     public void ApplyDamage(float damage)
     {
