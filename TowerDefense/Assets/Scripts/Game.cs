@@ -9,21 +9,25 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameTileContentFactory tileContentFactory = default;
     Ray TouchRay => Camera.main.ScreenPointToRay(Input.mousePosition);
-    [SerializeField]
-    EnemyFactory enemyFactory = default;
+    //[SerializeField]
+    //EnemyFactory enemyFactory = default;
     [SerializeField]
     WarFactory warFactory = default;
-    [SerializeField, Range(0.1f, 10f)]
-    float spawnSpeed = 1f;
-    float spawnProgress;
+    //[SerializeField, Range(0.1f, 10f)]
+    //float spawnSpeed = 1f;
+    //float spawnProgress;
     GameBehaviorCollection enemies = new GameBehaviorCollection();
     GameBehaviorCollection nonEmenies = new GameBehaviorCollection();
     TowerType selectedTowerType;
     static Game instance;
+    [SerializeField]
+    GameScenario scenario = default;
+    GameScenario.State activeScenario;
     void Awake()
     {
         board.Initialize(boardSize, tileContentFactory);
         board.ShowGrid = true;
+        activeScenario = scenario.Begin();
     }
     void OnValidate()
     {
@@ -66,12 +70,13 @@ public class Game : MonoBehaviour
         {
             selectedTowerType = TowerType.Mortar;
         }
-        spawnProgress += spawnSpeed * Time.deltaTime;
-        while (spawnProgress >= 1f)
-        {
-            spawnProgress -= 1f;
-            SpawnEnemy();
-        }
+        //spawnProgress += spawnSpeed * Time.deltaTime;
+        //while (spawnProgress >= 1f)
+        //{
+        //    spawnProgress -= 1f;
+        //    SpawnEnemy();
+        //}
+        activeScenario.Progress();
         enemies.GameUpdate();
         nonEmenies.GameUpdate();
         Physics.SyncTransforms();
@@ -108,12 +113,16 @@ public class Game : MonoBehaviour
             }
         }
     }
-    void SpawnEnemy()
+    public static void SpawnEnemy(EnemyFactory factory, EnemyType type)
     {
-        GameTile spawnPoint = board.GetSpawnPoint(Random.Range(0, board.SpawnPointCount));
-        Enemy enemy = enemyFactory.Get((EnemyType)(Random.Range(0, 3)));
+        //GameTile spawnPoint = board.GetSpawnPoint(Random.Range(0, board.SpawnPointCount));
+        //Enemy enemy = enemyFactory.Get((EnemyType)(Random.Range(0, 3)));
+        //enemy.SpwanOn(spawnPoint);
+        //enemies.Add(enemy);
+        GameTile spawnPoint = instance.board.GetSpawnPoint(Random.Range(0, instance.board.SpawnPointCount));
+        Enemy enemy = factory.Get(type);
         enemy.SpwanOn(spawnPoint);
-        enemies.Add(enemy);
+        instance.enemies.Add(enemy);
     }
     public static Shell SpawnShell()
     {
