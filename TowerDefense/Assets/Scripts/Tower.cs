@@ -5,7 +5,6 @@ public abstract class Tower : GameTileContent
 {
     [SerializeField, Range(1.5f, 10.5f)]
     protected float targetingRange = 1.5f;
-    static Collider[] targetsBuffer = new Collider[100];
     public abstract TowerType TowerType { get; }
     void OnDrawGizmosSelected()
     {
@@ -20,15 +19,20 @@ public abstract class Tower : GameTileContent
     }
     protected bool AcquireTarget(out TargetPoint target)
     {
-        Vector3 a = transform.localPosition;
-        Vector3 b = a;
-        b.y += 3f;
-        const int enemyLayerMask = 1 << 9;
-        int hits = Physics.OverlapCapsuleNonAlloc(a, b, targetingRange, targetsBuffer, enemyLayerMask);
-        if (hits > 0)
+        //Vector3 a = transform.localPosition;
+        //Vector3 b = a;
+        //b.y += 3f;
+        //const int enemyLayerMask = 1 << 9;
+        //int hits = Physics.OverlapCapsuleNonAlloc(a, b, targetingRange, targetsBuffer, enemyLayerMask);
+        //if (hits > 0)
+        //{
+        //    target = targetsBuffer[Random.Range(0, hits)].GetComponent<TargetPoint>();
+        //    Debug.Assert(target != null, "Targeted non-enemy!", target);
+        //    return true;
+        //}
+        if (TargetPoint.FillBuffer(transform.localPosition, targetingRange))
         {
-            target = targetsBuffer[Random.Range(0, hits)].GetComponent<TargetPoint>();
-            Debug.Assert(target != null, "Targeted non-enemy!", target);
+            target = TargetPoint.RandomBuffered;
             return true;
         }
         target = null;
