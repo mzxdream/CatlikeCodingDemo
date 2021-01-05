@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : GameBehavior
 {
     GameTile tileFrom, tileTo;
     Vector3 positionFrom, positionTo;
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
         //transform.localPosition = tile.transform.localPosition;
         PrepareIntro();
     }
-    public bool GameUpdate()
+    public override bool GameUpdate()
     {
         if (Health <= 0f)
         {
