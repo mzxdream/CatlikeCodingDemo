@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Sphere SML Wave
   m_EditorClassIdentifier: 
   spawnSequences:
-  - factory: {fileID: 11400000, guid: 9b86f7a0bee52d74ab91f2df177e50e3, type: 2}
+  - factory: {fileID: 11400000, guid: 2b0a011ea1e82d042b6c137ecd909c87, type: 2}
     type: 0
     amount: 9
     cooldown: 0.5
-  - factory: {fileID: 11400000, guid: 9b86f7a0bee52d74ab91f2df177e50e3, type: 2}
+  - factory: {fileID: 11400000, guid: 2b0a011ea1e82d042b6c137ecd909c87, type: 2}
     type: 0
     amount: 1
     cooldown: 4
-  - factory: {fileID: 11400000, guid: 9b86f7a0bee52d74ab91f2df177e50e3, type: 2}
+  - factory: {fileID: 11400000, guid: 2b0a011ea1e82d042b6c137ecd909c87, type: 2}
     type: 1
     amount: 5
     cooldown: 1
-  - factory: {fileID: 11400000, guid: 9b86f7a0bee52d74ab91f2df177e50e3, type: 2}
+  - factory: {fileID: 11400000, guid: 2b0a011ea1e82d042b6c137ecd909c87, type: 2}
     type: 2
     amount: 1
     cooldown: 5
