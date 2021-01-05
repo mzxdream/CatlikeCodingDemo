@@ -18,12 +18,15 @@ public class Explosion : WarEntity
         meshRenderer = GetComponent<MeshRenderer>();
         Debug.Assert(meshRenderer != null, "Explosion without renderer!");
     }
-    public void Initialize(Vector3 position, float blastRadius, float damage)
+    public void Initialize(Vector3 position, float blastRadius, float damage = 0f)
     {
-        TargetPoint.FillBuffer(position, blastRadius);
-        for (int i = 0; i < TargetPoint.BufferedCount; i++)
+        if (damage > 0f)
         {
-            TargetPoint.GetBuffered(i).Enemy.ApplyDamage(damage);
+            TargetPoint.FillBuffer(position, blastRadius);
+            for (int i = 0; i < TargetPoint.BufferedCount; i++)
+            {
+                TargetPoint.GetBuffered(i).Enemy.ApplyDamage(damage);
+            }
         }
         transform.localPosition = position;
         //transform.localScale = Vector3.one * (2f * blastRadius);
