@@ -70,6 +70,10 @@ public class Game : MonoBehaviour
         {
             selectedTowerType = TowerType.Mortar;
         }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            BeginNewGame();
+        }
         //spawnProgress += spawnSpeed * Time.deltaTime;
         //while (spawnProgress >= 1f)
         //{
@@ -81,6 +85,13 @@ public class Game : MonoBehaviour
         nonEmenies.GameUpdate();
         Physics.SyncTransforms();
         board.GameUpdate();
+    }
+    void BeginNewGame()
+    {
+        enemies.Clear();
+        nonEmenies.Clear();
+        board.Clear();
+        activeScenario = scenario.Begin();
     }
     void HandleAlternativeTouch()
     {
