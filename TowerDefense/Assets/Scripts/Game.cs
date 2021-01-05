@@ -121,4 +121,10 @@ public class Game : MonoBehaviour
         instance.nonEmenies.Add(shell);
         return shell;
     }
+    public static Explosion SpawnExplosion()
+    {
+        Explosion explosion = instance.warFactory.Explosion;
+        instance.nonEmenies.Add(explosion);
+        return explosion;
+    }
 }
