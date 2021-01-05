@@ -235,7 +235,7 @@ MonoBehaviour:
   type: 4
   targetingRange: 3.5
   shotsPerSecond: 1
-  mortar: {fileID: 0}
+  mortar: {fileID: 8928877769400280536}
 --- !u!1 &8928877770175064255
 GameObject:
   m_ObjectHideFlags: 0
