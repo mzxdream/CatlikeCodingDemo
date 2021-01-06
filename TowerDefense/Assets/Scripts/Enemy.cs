@@ -37,7 +37,7 @@ public class Enemy : GameBehavior
         this.pathOffset = pathOffset;
         //Health = 100f * scale;
         Health = health;
-        animator.Play(speed / scale);
+        animator.PlayIntro();
     }
     public void ApplyDamage(float damage)
     {
@@ -59,6 +59,23 @@ public class Enemy : GameBehavior
     }
     public override bool GameUpdate()
     {
+        if (animator.CurrentClip == Clip.Intro)
+        {
+            if (!animator.IsDone)
+            {
+                return true;
+            }
+            animator.PlayMove(speed / Scale);
+        }
+        else if (animator.CurrentClip == Clip.Outro)
+        {
+            if (animator.IsDone)
+            {
+                Recycle();
+                return false;
+            }
+            return true;
+        }
         if (Health <= 0f)
         {
             //originFactory.Reclaim(this);
@@ -75,7 +92,8 @@ public class Enemy : GameBehavior
             {
                 //OriginFactory.Reclaim(this);
                 Game.EnemyReachedDestination();
-                Recycle();
+                //Recycle();
+                animator.PlayOutro();
                 return false;
             }
             //positionFrom = positionTo;
@@ -124,6 +142,7 @@ public class Enemy : GameBehavior
     void PrepareIntro()
     {
         positionFrom = tileFrom.transform.localPosition;
+        transform.localPosition = positionFrom;
         positionTo = tileFrom.ExitPoint;
         direction = tileFrom.PathDirection;
         directionChange = DirectionChange.None;
