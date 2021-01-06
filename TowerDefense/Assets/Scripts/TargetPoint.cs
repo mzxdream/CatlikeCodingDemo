@@ -25,7 +25,12 @@ public class TargetPoint : MonoBehaviour
     public static TargetPoint GetBuffered(int index)
     {
         var target = buffer[index].GetComponent<TargetPoint>();
-        Debug.Assert(target != null, "Targeted non-enemy!", buffer[0]);
+        if (target == null)
+        {
+            int a = 10;
+            a++;
+        }
+        Debug.Assert(target != null, "Targeted non-enemy! " + index + "  " + BufferedCount, buffer[0]);
         return target;
     }
 }

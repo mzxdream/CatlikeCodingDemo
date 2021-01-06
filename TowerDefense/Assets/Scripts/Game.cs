@@ -23,11 +23,16 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameScenario scenario = default;
     GameScenario.State activeScenario;
+    [SerializeField, Range(0, 100)]
+    int startingPlayerHealth = 10;
+
+    int playerHealth;
     void Awake()
     {
         board.Initialize(boardSize, tileContentFactory);
         board.ShowGrid = true;
         activeScenario = scenario.Begin();
+        playerHealth = startingPlayerHealth;
     }
     void OnValidate()
     {
@@ -80,7 +85,17 @@ public class Game : MonoBehaviour
         //    spawnProgress -= 1f;
         //    SpawnEnemy();
         //}
-        activeScenario.Progress();
+        if (playerHealth <= 0 && startingPlayerHealth > 0)
+        {
+            Debug.Log("Defeat!");
+            BeginNewGame();
+        }
+        if (!activeScenario.Progress() && enemies.IsEmpty)
+        {
+            Debug.Log("Victory!");
+            BeginNewGame();
+            activeScenario.Progress();
+        }
         enemies.GameUpdate();
         nonEmenies.GameUpdate();
         Physics.SyncTransforms();
@@ -92,6 +107,7 @@ public class Game : MonoBehaviour
         nonEmenies.Clear();
         board.Clear();
         activeScenario = scenario.Begin();
+        playerHealth = startingPlayerHealth;
     }
     void HandleAlternativeTouch()
     {
@@ -146,5 +162,9 @@ public class Game : MonoBehaviour
         Explosion explosion = instance.warFactory.Explosion;
         instance.nonEmenies.Add(explosion);
         return explosion;
+    }
+    public static void EnemyReachedDestination()
+    {
+        instance.playerHealth -= 1;
     }
 }

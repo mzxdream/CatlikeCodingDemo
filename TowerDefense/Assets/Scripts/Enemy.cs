@@ -70,6 +70,7 @@ public class Enemy : GameBehavior
             if (tileTo == null)
             {
                 //OriginFactory.Reclaim(this);
+                Game.EnemyReachedDestination();
                 Recycle();
                 return false;
             }
