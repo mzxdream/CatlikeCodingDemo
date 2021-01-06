@@ -15,6 +15,9 @@ public class Enemy : GameBehavior
     float pathOffset;
     public float Scale { get; private set; }
     float Health { get; set; }
+    [SerializeField]
+    EnemyAnimationConfig animationConfig = default;
+    EnemyAnimator animator;
 
     EnemyFactory originFactory;
     public EnemyFactory OriginFactory
@@ -34,6 +37,7 @@ public class Enemy : GameBehavior
         this.pathOffset = pathOffset;
         //Health = 100f * scale;
         Health = health;
+        animator.Play(speed / scale);
     }
     public void ApplyDamage(float damage)
     {
@@ -167,6 +171,11 @@ public class Enemy : GameBehavior
     }
     public override void Recycle()
     {
+        animator.Stop();
         originFactory.Reclaim(this);
+    }
+    void Awake()
+    {
+        animator.Configure(model.GetChild(0).gameObject.AddComponent<Animator>(), animationConfig);
     }
 }

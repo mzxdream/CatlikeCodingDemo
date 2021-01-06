@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy Factory Sphere
   m_EditorClassIdentifier: 
   small:
-    prefab: {fileID: 2939571352315311953, guid: f395c9aa3f6d4ce448eaf7119c7eaaf4,
+    prefab: {fileID: 6817259636077896518, guid: 75b379f03aa59484e805a80f370b2f18,
       type: 3}
     scale:
       min: 0.5
