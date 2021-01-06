@@ -15,6 +15,16 @@ public class Enemy : GameBehavior
     float pathOffset;
     public float Scale { get; private set; }
     float Health { get; set; }
+    Collider targetPointCollider;
+    public Collider TargetPointCollider
+    {
+        set
+        {
+            Debug.Assert(targetPointCollider == null, "Redefined collider!");
+            targetPointCollider = value;
+        }
+    }
+    public bool IsValidTarget => animator.CurrentClip == Clip.Move;
     [SerializeField]
     EnemyAnimationConfig animationConfig = default;
     EnemyAnimator animator;
@@ -38,6 +48,7 @@ public class Enemy : GameBehavior
         //Health = 100f * scale;
         Health = health;
         animator.PlayIntro();
+        targetPointCollider.enabled = false;
     }
     public void ApplyDamage(float damage)
     {
@@ -67,8 +78,9 @@ public class Enemy : GameBehavior
                 return true;
             }
             animator.PlayMove(speed / Scale);
+            targetPointCollider.enabled = true;
         }
-        else if (animator.CurrentClip == Clip.Outro)
+        else if (animator.CurrentClip >= Clip.Outro)
         {
             if (animator.IsDone)
             {
@@ -80,8 +92,10 @@ public class Enemy : GameBehavior
         if (Health <= 0f)
         {
             //originFactory.Reclaim(this);
-            Recycle();
-            return false;
+            //Recycle();
+            animator.PlayDying();
+            targetPointCollider.enabled = false;
+            return true;
         }
         //transform.localPosition += Vector3.forward * Time.deltaTime;
         progress += Time.deltaTime * progressFactor;
@@ -95,6 +109,7 @@ public class Enemy : GameBehavior
                 Game.EnemyReachedDestination();
                 //Recycle();
                 animator.PlayOutro();
+                targetPointCollider.enabled = false;
                 return true;
             }
             //positionFrom = positionTo;
