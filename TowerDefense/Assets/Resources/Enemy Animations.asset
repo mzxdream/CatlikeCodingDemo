@@ -15,3 +15,4 @@ MonoBehaviour:
   move: {fileID: 7400000, guid: 4b0df181c3447db4184ce3c9d2df606f, type: 2}
   intro: {fileID: 7400000, guid: 983d2cc0577bdf741bbc8bd0e587e247, type: 2}
   outro: {fileID: 7400000, guid: 8c2be7d541e5728469c874115771ac7c, type: 2}
+  dying: {fileID: 7400000, guid: 796f84a03b98f014cb811535e2315305, type: 2}

@@ -2,7 +2,7 @@
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-public enum Clip { Move, Intro, Outro };
+public enum Clip { Move, Intro, Outro, Dying };
 
 [System.Serializable]
 public struct EnemyAnimator
@@ -18,7 +18,7 @@ public struct EnemyAnimator
     {
         graph = PlayableGraph.Create();
         graph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
-        mixer = AnimationMixerPlayable.Create(graph, 3);
+        mixer = AnimationMixerPlayable.Create(graph, 4);
 
         var clip = AnimationClipPlayable.Create(graph, config.Move);
         clip.Pause();
@@ -32,6 +32,11 @@ public struct EnemyAnimator
         clip.SetDuration(config.Outro.length);
         clip.Pause();
         mixer.ConnectInput((int)Clip.Outro, clip, 0);
+
+        clip = AnimationClipPlayable.Create(graph, config.Dying);
+        clip.SetDuration(config.Dying.length);
+        clip.Pause();
+        mixer.ConnectInput((int)Clip.Dying, clip, 0);
 
         var output = AnimationPlayableOutput.Create(graph, "Enemy", animator);
         output.SetSourcePlayable(mixer);
@@ -74,6 +79,10 @@ public struct EnemyAnimator
         //GetPlayable(Clip.Outro).Play();
         //CurrentClip = Clip.Outro;
         BeginTransition(Clip.Outro);
+    }
+    public void PlayDying()
+    {
+        BeginTransition(Clip.Dying);
     }
     public void Stop()
     {
