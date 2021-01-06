@@ -62,6 +62,10 @@ public class MortarTower : Tower
         float s = launchSpeed;
         float s2 = s * s;
         float r = s2 * s2  - g * (g * x * x + 2f * y * s2);
+        if (r < 0f)
+        {
+            return;
+        }
         Debug.Assert(r >= 0f, "Launch velocity insufficient for range!");
         float tanTheta = (s2 + Mathf.Sqrt(r)) / (g * x);
         float cosTheta = Mathf.Cos(Mathf.Atan(tanTheta));

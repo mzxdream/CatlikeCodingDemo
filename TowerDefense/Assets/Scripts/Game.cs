@@ -27,6 +27,9 @@ public class Game : MonoBehaviour
     int startingPlayerHealth = 10;
 
     int playerHealth;
+    const float pausedTimeScale = 0f;
+    [SerializeField, Range(1f, 10f)]
+    float playSpeed = 1f;
     void Awake()
     {
         board.Initialize(boardSize, tileContentFactory);
@@ -78,6 +81,14 @@ public class Game : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             BeginNewGame();
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Time.timeScale = Time.timeScale > pausedTimeScale ? pausedTimeScale : playSpeed;
+        }
+        else if (Time.timeScale > pausedTimeScale)
+        {
+            Time.timeScale = playSpeed;
         }
         //spawnProgress += spawnSpeed * Time.deltaTime;
         //while (spawnProgress >= 1f)
