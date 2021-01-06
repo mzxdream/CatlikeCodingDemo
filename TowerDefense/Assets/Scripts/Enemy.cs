@@ -59,6 +59,7 @@ public class Enemy : GameBehavior
     }
     public override bool GameUpdate()
     {
+        animator.GameUpdate();
         if (animator.CurrentClip == Clip.Intro)
         {
             if (!animator.IsDone)
@@ -94,7 +95,7 @@ public class Enemy : GameBehavior
                 Game.EnemyReachedDestination();
                 //Recycle();
                 animator.PlayOutro();
-                return false;
+                return true;
             }
             //positionFrom = positionTo;
             //positionTo = tileTo.transform.localPosition;

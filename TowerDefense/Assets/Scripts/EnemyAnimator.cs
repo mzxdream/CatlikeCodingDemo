@@ -9,6 +9,9 @@ public struct EnemyAnimator
 {
     PlayableGraph graph;
     AnimationMixerPlayable mixer;
+    Clip previousClip;
+    float transitionProgress;
+    const float transitionSpeed = 5f;
     public Clip CurrentClip { get; private set; }
     public bool IsDone => GetPlayable(CurrentClip).IsDone();
     public void Configure(Animator animator, EnemyAnimationConfig config)
@@ -43,6 +46,7 @@ public struct EnemyAnimator
         SetWeight(Clip.Intro, 1f);
         CurrentClip = Clip.Intro;
         graph.Play();
+        transitionProgress = -1f;
     }
     void SetWeight(Clip clip, float weight)
     {
@@ -50,13 +54,14 @@ public struct EnemyAnimator
     }
     public void PlayMove(float speed)
     {
-        SetWeight(CurrentClip, 0f);
-        SetWeight(Clip.Move, 1f);
-        //GetPlayable(Clip.Move).SetSpeed(speed);
-        var clip = GetPlayable(Clip.Move);
-        clip.SetSpeed(speed);
-        clip.Play();
-        CurrentClip = Clip.Move;
+        //SetWeight(CurrentClip, 0f);
+        //SetWeight(Clip.Move, 1f);
+        GetPlayable(Clip.Move).SetSpeed(speed);
+        BeginTransition(Clip.Move);
+        //var clip = GetPlayable(Clip.Move);
+        //clip.SetSpeed(speed);
+        //clip.Play();
+        //CurrentClip = Clip.Move;
     }
     Playable GetPlayable(Clip clip)
     {
@@ -64,10 +69,11 @@ public struct EnemyAnimator
     }
     public void PlayOutro()
     {
-        SetWeight(CurrentClip, 0f);
-        SetWeight(Clip.Outro, 1f);
-        GetPlayable(Clip.Outro).Play();
-        CurrentClip = Clip.Outro;
+        //SetWeight(CurrentClip, 0f);
+        //SetWeight(Clip.Outro, 1f);
+        //GetPlayable(Clip.Outro).Play();
+        //CurrentClip = Clip.Outro;
+        BeginTransition(Clip.Outro);
     }
     public void Stop()
     {
@@ -77,5 +83,31 @@ public struct EnemyAnimator
     public void Destroy()
     {
         graph.Destroy();
+    }
+    void BeginTransition(Clip nextClip)
+    {
+        previousClip = CurrentClip;
+        CurrentClip = nextClip;
+        transitionProgress = 0f;
+        GetPlayable(nextClip).Play();
+    }
+    public void GameUpdate()
+    {
+        if (transitionProgress >= 0f)
+        {
+            transitionProgress += Time.deltaTime * transitionSpeed;
+            if (transitionProgress >= 1f)
+            {
+                transitionProgress = -1f;
+                SetWeight(CurrentClip, 1f);
+                SetWeight(previousClip, 0f);
+                GetPlayable(previousClip).Pause();
+            }
+            else
+            {
+                SetWeight(CurrentClip, transitionProgress);
+                SetWeight(previousClip, 1f - transitionProgress);
+            }
+        }
     }
 }
