@@ -70,6 +70,13 @@ public class Enemy : GameBehavior
     }
     public override bool GameUpdate()
     {
+#if UNITY_EDITOR
+        if (!animator.IsValid)
+        {
+            animator.RestoreAfterHotReload(model.GetChild(0).GetComponent<Animator>(),
+            animationConfig, animationConfig.MoveAnimationSpeed * speed / Scale);
+        }
+#endif
         animator.GameUpdate();
         if (animator.CurrentClip == Clip.Intro)
         {
